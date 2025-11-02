@@ -1,3 +1,4 @@
+import 'package:expense_tracker/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: "Expense Tracker",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Inter"),
-      home: Scaffold(body: Center(child: Text("Hello SL"))),
+      home: OnboardingScreen(),
     );
   }
 }
