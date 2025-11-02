@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
@@ -12,14 +12,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Expense Tracker",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: "Inter"
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Text("Hello SL"),
-        ),
-      ),
+      theme: ThemeData(fontFamily: "Inter"),
+      home: Scaffold(body: Center(child: Text("Hello SL"))),
     );
   }
 }
