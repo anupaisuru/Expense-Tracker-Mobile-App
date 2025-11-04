@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:expense_tracker/services/user_services.dart';
+import 'package:expense_tracker/screens/main_screen.dart';
 import 'package:expense_tracker/constants/colors.dart';
 import 'package:expense_tracker/constants/constants.dart';
 import 'package:expense_tracker/widgets/custom_button.dart';
@@ -20,7 +22,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -112,7 +115,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                       TextFormField(
                         controller: _confirmPasswordController,
                         validator: (value) {
-                          if(value!.isEmpty){
+                          if (value!.isEmpty) {
                             return "please enter the same password";
                           }
                         },
@@ -157,15 +160,35 @@ class _UserDataScreenState extends State<UserDataScreen> {
                       SizedBox(height: 30),
                       // next button
                       GestureDetector(
-                        onTap: () {
-                          if(_formKey.currentState!.validate()){
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
                             // form is valid, process data
                             String userName = _userNameController.text;
                             String email = _userEmailController.text;
                             String password = _userPasswordController.text;
-                            String confirmPassword = _confirmPasswordController.text;
+                            String confirmPassword =
+                                _confirmPasswordController.text;
 
-                            print("$userName $email $password $confirmPassword");
+                            // save the username and email in the device database
+                            await UserServices.storeUserDetails(
+                              userName: userName,
+                              email: email,
+                              password: password,
+                              confirmPassword: confirmPassword,
+                              context: context,
+                            );
+
+                            //navigate to the main scrren
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return MainScreen();
+                                  },
+                                ),
+                              );
+                            }
                           }
                         },
                         child: CustomButton(
