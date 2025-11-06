@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices {
@@ -36,5 +37,15 @@ class UserServices {
     } catch (error) {
       error.toString();
     }
+  }
+
+  //method to check weather the username is saved in the shared pref
+  static Future<bool> checkUserName() async {
+    //create an instance for shared prefrence
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? userName = prefs.getString("userName");
+
+    return userName != null;
   }
 }
