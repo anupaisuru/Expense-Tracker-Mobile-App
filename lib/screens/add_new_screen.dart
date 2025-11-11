@@ -1,3 +1,4 @@
+import 'package:expense_tracker/services/expense_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -9,7 +10,8 @@ import 'package:expense_tracker/constants/colors.dart';
 import 'package:expense_tracker/constants/constants.dart';
 
 class AddNewScreen extends StatefulWidget {
-  const AddNewScreen({super.key});
+  final Function(ExpenseModel) addExpense;
+  const AddNewScreen({super.key, required this.addExpense});
 
   @override
   State<AddNewScreen> createState() => _AddNewScreenState();
@@ -387,9 +389,33 @@ class _AddNewScreenState extends State<AddNewScreen> {
 
                           SizedBox(height: 20),
 
-                          CustomButton(
-                            buttonName: "Add",
-                            buttonColor: _selectedMethod == 0 ? kRed : kGreen,
+                          // submit button
+                          GestureDetector(
+                            onTap: () async {
+                              // save the expense or income data in to the shared preference
+                              List<ExpenseModel> loadedExpenses =
+                                  await ExpenseService().loadExpense();
+
+                              //create the expense to store
+                              ExpenseModel expense = ExpenseModel(
+                                id: loadedExpenses.length + 1,
+                                title: _titleController.text,
+                                amount: _amountController.text.isEmpty
+                                    ? 0
+                                    : double.parse(_amountController.text),
+                                category: _expenseCategory,
+                                date: _selectedDate,
+                                time: _selectedTime,
+                                description: _descriptionController.text,
+                              );
+
+                              //add expense
+                              widget.addExpense(expense);
+                            },
+                            child: CustomButton(
+                              buttonName: "Add",
+                              buttonColor: _selectedMethod == 0 ? kRed : kGreen,
+                            ),
                           ),
                         ],
                       ),

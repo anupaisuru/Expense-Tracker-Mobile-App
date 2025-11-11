@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+
+import 'package:expense_tracker/models/expense_model.dart';
 import 'package:expense_tracker/screens/add_new_screen.dart';
 import 'package:expense_tracker/screens/budget_screen.dart';
 import 'package:expense_tracker/screens/home_screen.dart';
 import 'package:expense_tracker/screens/profile_screen.dart';
 import 'package:expense_tracker/screens/transaction_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:expense_tracker/services/expense_service.dart';
 import 'package:expense_tracker/constants/colors.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,12 +19,40 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentPageIndex = 0;
 
+  List<ExpenseModel> expenseList = [];
+
+  // method for fetch expenses
+  void fetchExpenses() async {
+    List<ExpenseModel> loadedExpenses = await ExpenseService().loadExpense();
+    setState(() {
+      expenseList = loadedExpenses;
+      print(expenseList.length);
+    });
+  }
+
+  // add new expense
+  void addNewExpense(ExpenseModel newExpense) {
+    ExpenseService().saveExpense(newExpense, context);
+    // update the list of expense
+    setState(() {
+      expenseList.add(newExpense);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      fetchExpenses();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      AddNewScreen(),
       HomeScreen(),
       TransactionScreen(),
+      AddNewScreen(addExpense: addNewExpense),
       BudgetScreen(),
       ProfileScreen(),
     ];
