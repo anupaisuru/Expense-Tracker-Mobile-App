@@ -1,7 +1,7 @@
-import 'package:expense_tracker/models/income_model.dart';
-import 'package:expense_tracker/services/income_service.dart';
 import 'package:flutter/material.dart';
 
+import 'package:expense_tracker/models/income_model.dart';
+import 'package:expense_tracker/services/income_service.dart';
 import 'package:expense_tracker/models/expense_model.dart';
 import 'package:expense_tracker/screens/add_new_screen.dart';
 import 'package:expense_tracker/screens/budget_screen.dart';
