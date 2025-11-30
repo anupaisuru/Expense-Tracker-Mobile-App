@@ -1,3 +1,5 @@
+import 'package:expense_tracker/models/income_model.dart';
+import 'package:expense_tracker/services/income_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expense_tracker/models/expense_model.dart';
@@ -20,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentPageIndex = 0;
 
   List<ExpenseModel> expenseList = [];
+  List<IncomeModel> incomeList = [];
 
   // method for fetch expenses
   void fetchExpenses() async {
@@ -30,12 +33,32 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  // method to fetch incomes
+  void fetchIncomes() async {
+    List<IncomeModel> loadedIncomes = await IncomeService().loadIncomes();
+    setState(() {
+      incomeList = loadedIncomes;
+      print(incomeList.length);
+    });
+  }
+
   // add new expense
   void addNewExpense(ExpenseModel newExpense) {
     ExpenseService().saveExpense(newExpense, context);
     // update the list of expense
     setState(() {
       expenseList.add(newExpense);
+      print(incomeList.length);
+    });
+  }
+
+  //add new income
+  void addNewIncome(IncomeModel newIncome) {
+    IncomeService().saveIncome(newIncome, context);
+
+    // update the incomelist
+    setState(() {
+      incomeList.add(newIncome);
     });
   }
 
@@ -44,6 +67,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     setState(() {
       fetchExpenses();
+      fetchIncomes();
     });
   }
 
@@ -52,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> pages = [
       HomeScreen(),
       TransactionScreen(),
-      AddNewScreen(addExpense: addNewExpense),
+      AddNewScreen(addExpense: addNewExpense, addIncome: addNewIncome),
       BudgetScreen(),
       ProfileScreen(),
     ];

@@ -5,8 +5,6 @@ import 'package:expense_tracker/models/expense_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpenseService {
-  // expense list
-  List<ExpenseModel> expenseList = [];
 
   // define the key for storing expenses in shared preferense
   static const String _expenseKey = "expenses";
